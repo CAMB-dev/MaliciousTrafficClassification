@@ -1,0 +1,2 @@
+LABEL_DICT = {'Analysis': 0, 'Backdoor': 1, 'Bot': 2, 'DDoS': 3, 'DoS': 4, 'DoS GoldenEye': 5, 'DoS Hulk': 6, 'DoS SlowHTTPTest': 7, 'DoS Slowloris': 8, 'Exploits': 9, 'FTP Patator': 10, 'Fuzzers': 11, 'Generic': 12, 'Heartbleed': 13,
+          'Infiltration': 14, 'Normal': 15, 'Port Scan': 16, 'Reconnaissance': 17, 'SSH Patator': 18, 'Shellcode': 19, 'Web Attack - Brute Force': 20, 'Web Attack - SQL Injection': 21, 'Web Attack - XSS': 22, 'Worms': 23}

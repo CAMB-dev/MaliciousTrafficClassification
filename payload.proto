@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package network;
+
+// 主消息结构
+message NetworkPacket {
+  FlowInfo flow_info = 1;        // 流信息
+  HeaderInfo header_info = 2;    // 数据包头部
+  PayloadData payload = 3;       // 负载数据
+  string attack_label = 4;       // 攻击类型标签
+}
+
+// 流信息
+message FlowInfo {
+  int32 forward_packets_per_second = 1; // 每秒传入包数
+  int32 backward_packets_per_second = 2; // 每秒传出包数
+  int32 bytes_transferred_per_second = 3; // 每秒传输字节数
+}
+
+// 头部信息
+message HeaderInfo {
+  int32 source_port = 1;      // 源端口号
+  int32 destination_port = 2;  // 目标端口号
+  int32 ip_length = 3;        // IP数据包的总字节长度
+  int32 payload_length = 4;    // 负载部分的字节长度
+  int32 ip_ttl = 5;           // TTL
+  int32 ip_tos = 6;           // ToS
+  int32 tcp_offset = 7;       // TCP数据偏移量
+  int32 tcp_flags = 8;        // TCP标志
+}
+
+// 负载数据
+message PayloadData {
+  repeated int32 bytes = 1;    // 负载字节数组
+}
