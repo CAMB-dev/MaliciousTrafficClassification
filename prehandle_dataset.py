@@ -2,7 +2,10 @@ import pandas as pd
 from multiprocessing import Pool, cpu_count
 from typing import List, Tuple
 import numpy as np
-import base64
+import time
+
+random_words_300 = ['watermelon', 'planet', 'cookie', 'jackal', 'giraffe', 'quilt', 'hotdog', 'otter', 'lantern', 'gannet', 'raccoon', 'x-ray', 'pencil', 'raft', 'ruler', 'karma', 'yield', 'hat', 'yarn', 'gym', 'cheetah', 'ivy', 'sloth', 'fern', 'nectar', 'peacock', 'mango', 'trunk', 'hammer', 'zip', 'effect', 'gorilla', 'bison', 'worm', 'truffle', 'acorn', 'xylophone', 'hippopotamus', 'highway', 'fox', 'plankton', 'eagle', 'ink', 'stone', 'wolf', 'tiger', 'starfish', 'tornado', 'balloon', 'garlic', 'anteater', 'whisk', 'whispery', 'jump', 'dragon', 'octagon', 'carob', 'dancer', 'wind', 'cat', 'pizza', 'elephant', 'microwave', 'squirrel', 'boulevard', 'jam', 'web', 'panda', 'zephyr', 'beach', 'snail', 'snake', 'nose', 'seal', 'gourd', 'cricket', 'javelin', 'lamp', 'vision', 'lock', 'perch', 'falcon', 'queen', 'umbrella', 'herb', 'yellow', 'telescope', 'feather', 'horizon', 'pig', 'clam', 'quill', 'opera', 'daisy', 'dove', 'kingfish', 'gashawk', 'whale', 'volcano', 'unity', 'zenith', 'dragonfly', 'twister', 'zebra', 'caterpillar', 'panther', 'tree', 'egg', 'bottle', 'dogfish', 'narwhal', 'quiver', 'shrimp', 'video', 'zinc', 'sled', 'mouse', 'dog', 'rose', 'treasure', 'parrot', 'wheel', 'vegetable', 'flute', 'jelly', 'mast', 'eel', 'hawk', 'chocolate', 'goat', 'treble', 'jab', 'monkey', 'nutmeg', 'dentist', 'kiwi', 'pear', 'dingo', 'orange', 'hill', 'aqua', 'neon', 'arrowband', 'grape', 'needle', 'rocket', 'kettle', 'uniform', 'summit', 'yo-yo',
+                    'melon', 'news', 'vulture', 'iron', 'elm', 'turtle', 'exit', 'antelope', 'willow', 'island', 'tulip', 'banana', 'jaguar', 'book', 'lion', 'revamp', 'kite', 'elf', 'olive', 'bonfire', 'rhinoceros', 'deer', 'horn', 'zealot', 'yacht', 'guitar', 'jungle', 'unicorn', 'iguana', 'alleyboard', 'octopus', 'iceberg', 'herring', 'jade', 'quest', 'firefly', 'llama', 'notebook', 'vortex', 'frog', 'cloud', 'abacus', 'victory', 'king', 'envelope', 'yeti', 'spirit', 'glove', 'lime', 'nut', 'astronaut', 'water', 'hammock', 'dolphin', 'brick', 'jet', 'lemon', 'anchor', 'zest', 'coral', 'energy', 'flamingo', 'harp', 'blade', 'meadow', 'boat', 'cactus', 'rosebug', 'lemur', 'bicycle', 'hen', 'sprite', 'pony', 'diamond', 'yodel', 'igloo', 'xerox', 'sunbeam', 'goose', 'quail', 'vase', 'moose', 'kernel', 'wizard', 'army', 'kangaroo', 'owl', 'frost', 'napkin', 'glider', 'apple', 'dandelion', 'patch', 'jigsaw', 'rodent', 'pumpkin', 'trap', 'trampoline', 'helmet', 'fire', 'elbow', 'flame', 'hero', 'joker', 'vanilla', 'clover', 'armadillo', 'walnut', 'finch', 'urn', 'violin', 'compass', 'mare', 'ant', 'emerald', 'fence', 'venus', 'manor', 'ultraviolet', 'badge', 'sun', 'gecko', 'lizard', 'icecap', 'honey', 'pancake', 'mountain', 'echo', 'arrow', 'lighthouse', 'jellyfish', 'mustard', 'horse', 'velvet', 'ladder', 'airbrush', 'vine', 'xenon', 'ostrich', 'warp', 'albatross', 'rabbit', 'door', 'baker', 'ember', 'seafoam', 'koala', 'snaptrace', 'tumbleweed', 'cabbage']
 
 
 def extract_payload(original_traffic: str) -> str:
@@ -12,18 +15,15 @@ def extract_payload(original_traffic: str) -> str:
 
     datas = [int(x) for x in payload.replace(
         '[PAD]', '').split(' ') if x.strip() != '']
-    if len(datas) != 0:
-        datas = ''.join([hex(x).replace('0x', '').zfill(2) for x in datas])
-        bytes_data = bytes.fromhex(datas)
-        base64_str = base64.b64encode(bytes_data).decode('utf-8')
-    else:
-        base64_str = ''
+
+    datas = [random_words_300[x] for x in datas]
+    payload2words = ' '.join(datas)
 
     padding_loc = payload.find('[PAD]')
     if padding_loc == -1:
-        return base64_str
+        return payload2words
     else:
-        return (base64_str+payload[padding_loc:]).replace(' ','')
+        return payload2words+payload[padding_loc:].replace(' ', '')
 
 
 def process_chunk(chunk_data: Tuple[List, int, int]) -> List[List]:
@@ -79,6 +79,6 @@ def prehandle_dataset(path: str, output_path: str = './datasets/output.csv') -> 
 
 
 if __name__ == '__main__':
-    prehandle_dataset('./datasets/test.csv', './datasets/test_prehandled.csv')
+    prehandle_dataset('./datasets/test.csv', './datasets/test_word.csv')
     prehandle_dataset('./datasets/train.csv',
-                      './datasets/train_prehandled.csv')
+                      './datasets/train_word.csv')
